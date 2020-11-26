@@ -1,0 +1,93 @@
+{% bootstrap_css %} 
+{% bootstrap_javascript jquery='full' %} 
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="description" content=""/>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    <title>Blog</title>
+    <script src="https://kit.fontawesome.com/c03d1ad45e.js" crossorigin="anonymous"></script>
+  </head>
+
+  <body>
+
+  {% include 'header.html' %}
+    <div class="container">
+      {% block content %} 
+      {% endblock %} 
+    </div>
+    <div style="padding: 10px; margin-bottom: 10px; 　border: 1px dashed #333333; background-color: #009999; color: #ffffff;">
+    関西有名釣り場
+    </div>
+
+    <div id="map_canvas" style="width:600px; height:10px; ">
+    </div>
+    <script src="//maps.googleapis.com/maps/api/js?key=AIzaSyBpHRju6DdUQjysxZ4iiMrs_bqLzJbTvkI&libraries=drawing,places,geometry"></script>
+
+    <div id="map" style="width: 740px;height:600px;  margin:0 auto;"></div>
+    <script type="text/javascript">
+      function attachMessage(marker, msg) {
+        google.maps.event.addListener(marker, 'click', function(event) {
+          new google.maps.InfoWindow({
+            content: msg
+          }).open(marker.getMap(), marker);
+        });
+      }
+ 
+      var data = new Array();
+      data.push({position: new google.maps.LatLng(34.315443,135.099509), content: 'とっとパーク小島'});
+      data.push({position: new google.maps.LatLng(34.683285,135.369114), content: '尼崎魚釣り公園'});
+      data.push({position: new google.maps.LatLng(34.634262,135.104573), content: '須磨海づり公園'});
+      data.push({position: new google.maps.LatLng(34.151020,135.181070), content: '和歌山マリーナシティ海釣り公園'});
+      data.push({position: new google.maps.LatLng(34.614665,135.401757), content: '南港魚釣り公園'});
+
+      data.push({position: new google.maps.LatLng(35.554437,135.263307), content: '宮津市海洋つり場'});
+      data.push({position: new google.maps.LatLng(34.138309,135.143675), content: '下津ピアーランド'});
+      data.push({position: new google.maps.LatLng(34.229052,134.703165), content: '南あわじ市 メガフロート海づり公園'});
+      data.push({position: new google.maps.LatLng(34.693131, 135.358227), content:　'鳴尾浜臨海公園海づり広場'});
+      data.push({position: new google.maps.LatLng(35.607777,135.841655), content: '海釣り公園みかた'});
+
+      var myMap = new google.maps.Map(document.getElementById('map'), {
+        zoom: 7,
+        center: new google.maps.LatLng(34.702141,135.495243),
+        scrollwheel: false,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+      });
+    
+      for (i = 0; i < data.length; i++) {
+        var myMarker = new google.maps.Marker({
+          position: data[i].position,
+          map: myMap
+        });
+        attachMessage(myMarker, data[i].content);
+      }
+    </script>
+
+    {% include 'footer.html' %} 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script type="text/javascript">
+      $(document).ready(function(event){
+      $(document).on('click', '#like', function(event){
+        event.preventDefault();
+        var post_id = $(this).attr('value');
+        $.ajax({
+        type: 'POST',
+        url: '{% url "blog_app:like" %}',
+        data: {'post_id': post_id, 'csrfmiddlewaretoken': '{{ csrf_token }}'},
+        dataType: 'json',
+        success: function(response){
+          $('#like').html(response['form'])
+          console.log($('#like').html(response['form']));
+       },
+        error: function(rs, e){
+          console.log(rs.responseText);
+          }
+         });
+       });
+      });
+    </script>
+  </body>
+</html>

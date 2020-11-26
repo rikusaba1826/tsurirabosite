@@ -1,0 +1,22 @@
+django
+__pycache__
+staticfiles
+local_settings.py
+db.sqlite3
+<<<<<<< HEAD
+<<<<<<< HEAD
+*.py[co]
+.vercel
+=======
+=======
+>>>>>>> 03dec09a1978adc5d7f8e52deb939ce5fdfabeba
+<<<<<<< HEAD
+*.py[co]
+.vercel
+=======
+*.py[co]
+>>>>>>> 37c84ae9aa8060920ea53e6ce230dbcddc975ecd
+<<<<<<< HEAD
+>>>>>>> 03dec09a1978adc5d7f8e52deb939ce5fdfabeba
+=======
+>>>>>>> 03dec09a1978adc5d7f8e52deb939ce5fdfabeba
